@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import styles from "./MinsMax.css";
+import "./MinsMax.css";
 import CoinsExcluded from "./CoinsExluded";
 export const MinsMax = () => {
   const [state, setState] = useState({});
@@ -59,12 +59,16 @@ export const MinsMax = () => {
         <div className="flexInnerDiv">
           <h2>Max :</h2>
           {result ? <h3>Total: {result.max.total}</h3> : ""}
-          {result ? result.max.coins.map((coin) => <p>{coin}</p>) : ""}
+          {result
+            ? result.max.coins.map((coin) => <p key={coin}>{coin}</p>)
+            : ""}
         </div>
         <div className="flexInnerDiv">
           <h2>Min :</h2>
           {result ? <h3>Total: {result.min.total}</h3> : ""}
-          {result ? result.min.coins.map((coin) => <p>{coin}</p>) : ""}
+          {result
+            ? result.min.coins.map((coin) => <p key={coin}>{coin}</p>)
+            : ""}
         </div>
       </div>
     </div>
