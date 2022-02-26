@@ -5,12 +5,20 @@ import CoinsExcluded from "./CoinsExluded";
 export const MinsMax = () => {
   const [state, setState] = useState({});
   const [result, setResult] = useState();
-  //const [coinsExcluded, setCoinsExcluded] = useState([]);
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
       .get(
-        `https://jjtradingapi.herokuapp.com/minsmax?days_back=${state.daysBack}&coins_quantity=${state.coinsQuantity}`
+        `https://jjtradingapi.herokuapp.com/api/minsmax?days_back=${state.daysBack}&coins_quantity=${state.coinsQuantity}`
+        /* {
+          headers: {
+            xhrFields: {
+              withCredentials: true,
+            },
+            crossDomain: true,
+            contentType: "application/json; charset=utf-8",
+          },
+        } */
       )
       .then((result) => {
         console.log(result.data);

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 export default function CoinsExcluded({ props }) {
   useEffect(() => {
     axios
-      .get("https://jjtradingapi.herokuapp.com/minsmax/coinsexcluded")
+      .get("https://jjtradingapi.herokuapp.com/api/minsmax/coinsexcluded")
       .then((result) => setCoinsExcluded(result.data));
   }, []);
 
@@ -13,7 +13,7 @@ export default function CoinsExcluded({ props }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios.put(
-      `https://jjtradingapi.herokuapp.com/minsmax/addcoin?coin=${coin}`
+      `https://jjtradingapi.herokuapp.com/api/minsmax/addcoin?coin=${coin}`
     );
     setCoinsExcluded([...coinsExcluded, coin]);
   };
