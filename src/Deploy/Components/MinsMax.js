@@ -9,16 +9,17 @@ export const MinsMax = () => {
     event.preventDefault();
     axios
       .get(
-        `https://jjtradingapi.herokuapp.com/api/minsmax?days_back=${state.daysBack}&coins_quantity=${state.coinsQuantity}`
-        /* {
+        `https://jjtrading-yzukr.ondigitalocean.app/api/minsmax?days_back=${state.daysBack}&coins_quantity=${state.coinsQuantity}`,
+        {
           headers: {
             xhrFields: {
               withCredentials: true,
             },
             crossDomain: true,
             contentType: "application/json; charset=utf-8",
+            "Access-Control-Allow-Origin": "*",
           },
-        } */
+        }
       )
       .then((result) => {
         console.log(result.data);
