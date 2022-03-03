@@ -1,5 +1,16 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { makeStyles } from "@mui/styles";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import "./CoinsExcluded.css";
+
+const useStyles = makeStyles({
+  title: {
+    color: "black",
+  },
+});
 
 export default function CoinsExcluded({ props }) {
   useEffect(() => {
@@ -16,33 +27,42 @@ export default function CoinsExcluded({ props }) {
       `https://jjtradingapi.herokuapp.com/api/minsmax/addcoin?coin=${coin}`
     );
     setCoinsExcluded([...coinsExcluded, coin]);
+    setCoin("");
   };
   const handleOnChange = (event) => {
     setCoin(event.target.value);
-    console.log(coin);
   };
+
+  const classes = useStyles();
+
   return (
-    <div>
-      <div className="coinsExcluded">
-        <h2>Coins exluded:</h2>
+    <div className="containerr">
+      <Typography variant="h5" component="div" className={classes.title}>
+        Coins excluded
+      </Typography>
+      <Typography sx={{ mb: 1.5 }} color="text.secondary">
         {coinsExcluded ? coinsExcluded.map((coin) => coin + " ") : ""}
-      </div>
+      </Typography>
+
       <div className="addCoin">
         <form onSubmit={handleSubmit}>
-          <label>
-            Add coin to exclude:
-            <input
-              type="text"
-              value={coin}
-              name="coin"
-              onChange={handleOnChange}
-            ></input>
-          </label>
+          <TextField
+            id="outlined-basic"
+            label="Add coin to exlude"
+            variant="outlined"
+            type="text"
+            value={coin}
+            name="coin"
+            onChange={handleOnChange}
+            className={classes.input}
+            size="small"
+          />
 
-          <input type="submit"></input>
+          <Button className={classes.input} type="submit">
+            <Typography className={classes.buttonText}>Add</Typography>
+          </Button>
         </form>
       </div>
-      {console.log("coins exluded:", coinsExcluded)}
     </div>
   );
 }

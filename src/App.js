@@ -1,10 +1,11 @@
 import "./App.css";
 import { MinsMax } from "./Deploy/Components/MinsMax";
+import { MinsMaxContainer } from "./Deploy/Components/MinsMaxContainer";
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <MinsMax></MinsMax>
+        <MinsMaxContainer></MinsMaxContainer>
       </header>
     </div>
   );

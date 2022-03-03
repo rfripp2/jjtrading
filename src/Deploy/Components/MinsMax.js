@@ -1,30 +1,65 @@
 import { useState } from "react";
+import Loading from "./Loading";
 import axios from "axios";
 import "./MinsMax.css";
-import CoinsExcluded from "./CoinsExluded";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
 export const MinsMax = () => {
   const [state, setState] = useState({});
-  const [result, setResult] = useState();
+  //const [coins, setCoins] = useState();
+  const [mins, setMins] = useState();
+  const [max, setMax] = useState();
+  const [tracked, setTracked] = useState(0);
+  const [errors, setErrors] = useState([]);
+  const [isLoading, setLoading] = useState(false);
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     axios
       .get(
-        `https://jjtrading-yzukr.ondigitalocean.app/api/minsmax?days_back=${state.daysBack}&coins_quantity=${state.coinsQuantity}`,
-        {
-          headers: {
-            xhrFields: {
-              withCredentials: true,
-            },
-            crossDomain: true,
-            contentType: "application/json; charset=utf-8",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
+        `https://jjtradingapi.herokuapp.com/api/coins/${state.coinsQuantity}`
       )
       .then((result) => {
-        console.log(result.data);
-        setResult(result.data);
+        return result.data;
+      })
+      .then((coins) => {
+        let minsMax = {
+          min: [],
+          max: [],
+        };
+        let coinsTracked = 0;
+
+        coins.forEach(async (coin) => {
+          try {
+            const result = await axios.get(
+              `https://jjtradingapi.herokuapp.com/api/min_max_today?days_back=${state.daysBack}&pair=${coin}-usd`
+            );
+            if (coin === coins[coins.length - 1]) {
+              setLoading(false);
+            }
+            coinsTracked += 1;
+            setTracked(coinsTracked);
+            if (result.data.min) {
+              minsMax.min.push(coin);
+            }
+            if (result.data.max) {
+              minsMax.max.push(coin);
+            }
+            const result_1 = minsMax;
+            Promise.all(result_1.min).then((result_2) => {
+              setMins(result_2);
+            });
+
+            Promise.all(result_1.max).then((result_3) => {
+              setMax(result_3);
+            });
+          } catch (err) {
+            setErrors([...errors, coin]);
+          }
+        });
       });
+
     handleReset();
   };
   const handleOnChange = (event) => {
@@ -41,43 +76,103 @@ export const MinsMax = () => {
   }
   return (
     <div>
-      <CoinsExcluded></CoinsExcluded>
       <form onSubmit={handleSubmit}>
         <label>
-          Days Back:
-          <input
+          <TextField
             type="text"
             value={state.daysBack}
             name="daysBack"
             onChange={handleOnChange}
-          ></input>
+            placeholder="Days Back"
+          ></TextField>
         </label>
-        <br />
+
         <label>
-          Quantity of coins:
-          <input
+          <TextField
             type="number"
             value={state.coinsQuantity}
             name="coinsQuantity"
             onChange={handleOnChange}
-          ></input>
+            placeholder="Coints quantity"
+          ></TextField>
         </label>
-        <input type="submit"></input>
+        <Button type="submit">
+          <Typography>Request</Typography>
+        </Button>
       </form>
+      {isLoading ? <Loading></Loading> : ""}
       <div className="container">
         <div className="flexInnerDiv">
-          <h2>Max :</h2>
-          {result ? <h3>Total: {result.max.total}</h3> : ""}
-          {result
-            ? result.max.coins.map((coin) => <p key={coin}>{coin}</p>)
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Max Today
+          </Typography>
+          {max
+            ? max.map((coin) => {
+                return (
+                  <Typography
+                    sx={{ color: "black" }}
+                    variant="h5"
+                    component="div"
+                    id={coin}
+                    key={coin}
+                  >
+                    {coin}
+                  </Typography>
+                );
+              })
             : ""}
         </div>
         <div className="flexInnerDiv">
-          <h2>Min :</h2>
-          {result ? <h3>Total: {result.min.total}</h3> : ""}
-          {result
-            ? result.min.coins.map((coin) => <p key={coin}>{coin}</p>)
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Min Today
+          </Typography>
+          {mins
+            ? mins.map((coin) => {
+                return (
+                  <Typography
+                    sx={{ color: "black" }}
+                    variant="h5"
+                    component="div"
+                    id={coin}
+                    key={coin}
+                  >
+                    {coin}
+                  </Typography>
+                );
+              })
             : ""}
+        </div>
+        <div className="flexInnerDiv">
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Coins with errors
+          </Typography>
+          {errors
+            ? errors.map((coin) => {
+                return (
+                  <Typography
+                    sx={{ color: "black" }}
+                    variant="h5"
+                    component="div"
+                    id={coin}
+                    key={coin}
+                  >
+                    {coin}
+                  </Typography>
+                );
+              })
+            : ""}
+        </div>
+        <div className="flexInnerDiv">
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Tracked
+          </Typography>
+          {tracked ? (
+            <Typography sx={{ color: "black" }} variant="h5" component="div">
+              {tracked}
+            </Typography>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>
