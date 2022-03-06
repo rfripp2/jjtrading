@@ -27,13 +27,14 @@ export const MinsMax = () => {
         let minsMax = {
           min: [],
           max: [],
+          errors: []
         };
         let coinsTracked = 0;
 
         coins.forEach(async (coin) => {
           try {
             const result = await axios.get(
-              `https://jjtradingapi.herokuapp.com/api/min_max_today?days_back=${state.daysBack}&pair=${coin}-usd`
+              `https://jjtradingapi.herokuapp.com/api/min_max_today?days_back=${state.daysBack}d&pair=${coin}-usd`
             );
             if (coin === coins[coins.length - 1]) {
               setLoading(false);
@@ -55,7 +56,9 @@ export const MinsMax = () => {
               setMax(result_3);
             });
           } catch (err) {
-            setErrors([...errors, coin]);
+            minsMax.errors.push(coin)
+            console.log("mins max obj errr",minsMax.errors)
+            setErrors(minsMax.errors)
           }
         });
       });
@@ -79,7 +82,7 @@ export const MinsMax = () => {
       <form onSubmit={handleSubmit}>
         <label>
           <TextField
-            type="text"
+            type="number"
             value={state.daysBack}
             name="daysBack"
             onChange={handleOnChange}
@@ -104,7 +107,7 @@ export const MinsMax = () => {
       <div className="container">
         <div className="flexInnerDiv">
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Max Today
+            Max Today({max?.length ? max.length : 0})
           </Typography>
           {max
             ? max.map((coin) => {
@@ -124,7 +127,7 @@ export const MinsMax = () => {
         </div>
         <div className="flexInnerDiv">
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Min Today
+            Min Today({mins?.length ? mins.length : 0})
           </Typography>
           {mins
             ? mins.map((coin) => {
@@ -144,7 +147,7 @@ export const MinsMax = () => {
         </div>
         <div className="flexInnerDiv">
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Coins with errors
+            Coins with errors({errors?.length ? errors.length : 0})
           </Typography>
           {errors
             ? errors.map((coin) => {
@@ -161,6 +164,7 @@ export const MinsMax = () => {
                 );
               })
             : ""}
+            {console.log("errors array",errors)}
         </div>
         <div className="flexInnerDiv">
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

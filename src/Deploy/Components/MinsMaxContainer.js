@@ -18,7 +18,7 @@ export function MinsMaxContainer() {
     <div>
       <Box
         sx={{
-          width: 500,
+          width: 600,
 
           backgroundColor: "silver",
 
