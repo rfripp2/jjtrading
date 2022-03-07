@@ -41,10 +41,12 @@ export const MinsMax = () => {
             }
             coinsTracked += 1;
             setTracked(coinsTracked);
+            console.log("result:",coin,result)
             if (result.data.min) {
               minsMax.min.push(coin);
             }
             if (result.data.max) {
+              
               minsMax.max.push(coin);
             }
             const result_1 = minsMax;
