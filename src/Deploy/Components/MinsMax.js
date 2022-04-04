@@ -49,6 +49,10 @@ export const MinsMax = () => {
               
               minsMax.max.push(coin);
             }
+            if (result.data.error){
+              minsMax.errors.push(coin)
+              setErrors(minsMax.errors)
+            }
             const result_1 = minsMax;
             Promise.all(result_1.min).then((result_2) => {
               setMins(result_2);
