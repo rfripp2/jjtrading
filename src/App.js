@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <MinsMaxContainer></MinsMaxContainer>
-        <Chart></Chart>
+       
       </header>
     </div>
   );
