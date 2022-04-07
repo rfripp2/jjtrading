@@ -13,9 +13,10 @@ const useStyles = makeStyles({
 });
 
 export default function CoinsExcluded({ props }) {
+  const API = process.env.REACT_APP_API
   useEffect(() => {
     axios
-      .get("https://jjtradingapi.herokuapp.com/api/minsmax/coinsexcluded")
+      .get(`${API}/api/minsmax/coinsexcluded`)
       .then((result) => setCoinsExcluded(result.data));
   }, []);
 
@@ -24,7 +25,7 @@ export default function CoinsExcluded({ props }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios.put(
-      `https://jjtradingapi.herokuapp.com/api/minsmax/addcoin?coin=${coin}`
+      `${API}/api/minsmax/addcoin?coin=${coin}`
     );
     setCoinsExcluded([...coinsExcluded, coin]);
     setCoin("");

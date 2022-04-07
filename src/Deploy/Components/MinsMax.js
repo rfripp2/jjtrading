@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 export const MinsMax = () => {
+  const API = process.env.REACT_APP_API
   const [state, setState] = useState({});
   //const [coins, setCoins] = useState();
   const [mins, setMins] = useState();
@@ -18,7 +19,7 @@ export const MinsMax = () => {
     event.preventDefault();
     axios
       .get(
-        `https://jjtradingapi.herokuapp.com/api/coins/${state.coinsQuantity}`
+        `${API}/api/coins/${state.coinsQuantity}`
       )
       .then((result) => {
         return result.data;
@@ -34,7 +35,7 @@ export const MinsMax = () => {
         coins.forEach(async (coin) => {
           try {
             const result = await axios.get(
-              `https://jjtradingapi.herokuapp.com/api/min_max_today?days_back=${state.daysBack}d&pair=${coin}-usd`
+              `${API}/api/min_max_today?days_back=${state.daysBack}d&pair=${coin}-usd`
             );
             if (coin === coins[coins.length - 1]) {
               setLoading(false);
@@ -53,19 +54,20 @@ export const MinsMax = () => {
               minsMax.errors.push(coin)
               setErrors(minsMax.errors)
             }
-            const result_1 = minsMax;
-            Promise.all(result_1.min).then((result_2) => {
-              setMins(result_2);
-            });
-
-            Promise.all(result_1.max).then((result_3) => {
-              setMax(result_3);
-            });
+           
           } catch (err) {
             minsMax.errors.push(coin)
             console.log("mins max obj errr",minsMax.errors)
             setErrors(minsMax.errors)
           }
+        });
+        const result_1 = minsMax;
+        Promise.all(result_1.min).then((result_2) => {
+          setMins(result_2);
+        });
+
+        Promise.all(result_1.max).then((result_3) => {
+          setMax(result_3);
         });
       });
 
