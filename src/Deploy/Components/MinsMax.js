@@ -173,7 +173,7 @@ export const MinsMax = () => {
                 );
               })
             : ""}
-            {console.log("errors array",errors)}
+            
         </div>
         <div className="flexInnerDiv">
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
