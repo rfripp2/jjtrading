@@ -60,15 +60,16 @@ export const MinsMax = () => {
             console.log("mins max obj errr",minsMax.errors)
             setErrors(minsMax.errors)
           }
+          const result_1 = minsMax;
+          Promise.all(result_1.min).then((result_2) => {
+            setMins(result_2);
+          });
+  
+          Promise.all(result_1.max).then((result_3) => {
+            setMax(result_3);
+          });
         });
-        const result_1 = minsMax;
-        Promise.all(result_1.min).then((result_2) => {
-          setMins(result_2);
-        });
-
-        Promise.all(result_1.max).then((result_3) => {
-          setMax(result_3);
-        });
+       
       });
 
     handleReset();
