@@ -1,6 +1,5 @@
 import httpsClient from "./httpsClient";
 import { useState, useEffect } from "react";
-import { MinsMaxReport } from "./MinsMaxReport";
 import { DataGrid } from "@mui/x-data-grid";
 export function Reports() {
 	const API = process.env.REACT_APP_API;
