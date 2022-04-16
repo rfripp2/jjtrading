@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 import { MinsMaxReport } from "./MinsMaxReport";
 import { DataGrid } from "@mui/x-data-grid";
 export function Reports() {
+	const API = process.env.REACT_APP_API;
 	const [user, setUser] = useState("");
 	const [id, setId] = useState();
 	const [reports, setReports] = useState();
 	const [rows, setRows] = useState();
 	useEffect(async () => {
-		const response = await httpsClient.get("//localhost:5000/getreport");
+		const response = await httpsClient.get(`${API}/getreport`);
 		console.log("response", response);
 		setReports(response.data);
 	}, []);
